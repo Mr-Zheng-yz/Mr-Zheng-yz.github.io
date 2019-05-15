@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一、FlexboxLayout是什么FlexboxLayout是Google开源的一个强大的控件，直接继承ViewGroup，效果类似于加强版的LinearLayout，但与LinearLayout并无关联。 官方原话是：  FlexboxLayout is a library project which brings the similar capabilities of CSS Flexibl">
+<meta name="keywords" content="Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FlexboxLayout浅析(Google官方流式布局方案)">
+<meta property="og:url" content="http://yoursite.com/2019/05/15/FlexboxLayout浅析-Google官方流式布局方案/index.html">
+<meta property="og:site_name" content="白泽丶的博客">
+<meta property="og:description" content="一、FlexboxLayout是什么FlexboxLayout是Google开源的一个强大的控件，直接继承ViewGroup，效果类似于加强版的LinearLayout，但与LinearLayout并无关联。 官方原话是：  FlexboxLayout is a library project which brings the similar capabilities of CSS Flexibl">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190514175032267.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/201905141757008.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190514175032267.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190514180738599.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190514180954962.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515095235856.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515095621148.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515095736422.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515100250134.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515100338678.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2019051510173578.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515095621148.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515102427865.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515102542345.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515102729865.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515102815495.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515102859538.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515104039887.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515104747671.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515105529325.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515105605583.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515105648629.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515105909488.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515105059606.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515110558455.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515104747671.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515111036674.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515111112984.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515111153840.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2019051511123743.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515111305405.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2019051515100723.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515150934198.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515151039167.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515134907256.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2019051513575819.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515140905798.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515142713732.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515143048556.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2019051514414988.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515145617180.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515121152189.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515122352736.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515122352736.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515122352736.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515122352736.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515122352736.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515122352736.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515122352736.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515122352736.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515122352736.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515122352736.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515122352736.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515122352736.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515122352736.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515122352736.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515122352736.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515122352736.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515122352736.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515122352736.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515122352736.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515122352736.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515122352736.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515122352736.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515122352736.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515122352736.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515122352736.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515122352736.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515122352736.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190515122352736.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190514164120744.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70">
+<meta property="og:updated_time" content="2019-05-15T14:47:47.851Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="FlexboxLayout浅析(Google官方流式布局方案)">
+<meta name="twitter:description" content="一、FlexboxLayout是什么FlexboxLayout是Google开源的一个强大的控件，直接继承ViewGroup，效果类似于加强版的LinearLayout，但与LinearLayout并无关联。 官方原话是：  FlexboxLayout is a library project which brings the similar capabilities of CSS Flexibl">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20190514175032267.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/05/15/FlexboxLayout浅析-Google官方流式布局方案/">
+
+
+
+
+
+  <title>FlexboxLayout浅析(Google官方流式布局方案) | 白泽丶的博客</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?41fc030db57d5570dd22f78997dc4a7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">白泽丶的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/15/FlexboxLayout浅析-Google官方流式布局方案/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="白泽丶">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://pic.qqtn.com/up/2018-8/2018081715500076413.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="白泽丶的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">FlexboxLayout浅析(Google官方流式布局方案)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-15T22:36:36+08:00">
+                2019-05-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="一、FlexboxLayout是什么"><a href="#一、FlexboxLayout是什么" class="headerlink" title="一、FlexboxLayout是什么"></a>一、FlexboxLayout是什么</h2><p>FlexboxLayout是Google开源的一个强大的控件，直接继承ViewGroup，效果类似于加强版的LinearLayout，但与LinearLayout并无关联。</p>
+<p>官方原话是：</p>
+<blockquote>
+<p>FlexboxLayout is a library project which brings the similar capabilities of CSS Flexible Box Layout Module to Android.<br>意思是：FlexBoxLayout是为Android带来了与 <a href="https://www.w3.org/TR/css-flexbox-1/" target="_blank" rel="noopener">CSS Flexible Box Layout</a>（CSS 弹性盒子）相似功能的库。</p>
+</blockquote>
+<a id="more"></a>
+<p>Github地址：<a href="https://github.com/google/flexbox-layout" target="_blank" rel="noopener">https://github.com/google/flexbox-layout</a></p>
+<h2 id="二、如何使用FlexboxLayout"><a href="#二、如何使用FlexboxLayout" class="headerlink" title="二、如何使用FlexboxLayout"></a>二、如何使用FlexboxLayout</h2><p>FlexBoxLayout有非常多的属性，下面一一验证各个属性的作用</p>
+<h3 id="引用依赖"><a href="#引用依赖" class="headerlink" title="引用依赖"></a>引用依赖</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    implementation &apos;com.google.android:flexbox:1.1.0&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="在布局中简单使用"><a href="#在布局中简单使用" class="headerlink" title="在布局中简单使用"></a>在布局中简单使用</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&lt;com.google.android.flexbox.FlexboxLayout</span><br><span class="line">        android:layout_width=&quot;match_parent&quot;</span><br><span class="line">        android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">        android:background=&quot;@color/colorPrimary&quot;</span><br><span class="line">        app:flexWrap=&quot;wrap&quot;&gt;</span><br><span class="line"></span><br><span class="line">        &lt;TextView</span><br><span class="line">            style=&quot;@style/TextStyle&quot;</span><br><span class="line">            android:text=&quot;推送和即时通讯&quot;/&gt;</span><br><span class="line"></span><br><span class="line">        &lt;TextView</span><br><span class="line">            style=&quot;@style/TextStyle&quot;</span><br><span class="line">            android:text=&quot;蓝牙&quot; /&gt;</span><br><span class="line"></span><br><span class="line">        &lt;TextView</span><br><span class="line">            style=&quot;@style/TextStyle&quot;</span><br><span class="line">            android:text=&quot;程序员&quot;/&gt;</span><br><span class="line"></span><br><span class="line">        &lt;TextView</span><br><span class="line">            style=&quot;@style/TextStyle&quot;</span><br><span class="line">            android:text=&quot;影视天堂&quot; /&gt;</span><br><span class="line"></span><br><span class="line">        &lt;TextView</span><br><span class="line">            style=&quot;@style/TextStyle&quot;</span><br><span class="line">            android:text=&quot;郭德纲&quot; /&gt;</span><br><span class="line"></span><br><span class="line">        &lt;TextView</span><br><span class="line">            style=&quot;@style/TextStyle&quot;</span><br><span class="line">            android:text=&quot;旅行——在路上&quot; /&gt;</span><br><span class="line"></span><br><span class="line">        &lt;TextView</span><br><span class="line">            style=&quot;@style/TextStyle&quot;</span><br><span class="line">            android:text=&quot;复仇者联盟4&quot; /&gt;</span><br><span class="line"></span><br><span class="line">    &lt;/com.google.android.flexbox.FlexboxLayout&gt;</span><br></pre></td></tr></table></figure>
+<p>TextStyle如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;style name=&quot;TextStyle&quot;&gt;</span><br><span class="line">       &lt;item name=&quot;android:layout_margin&quot;&gt;5dp&lt;/item&gt;</span><br><span class="line">       &lt;item name=&quot;android:layout_width&quot;&gt;wrap_content&lt;/item&gt;</span><br><span class="line">       &lt;item name=&quot;android:layout_height&quot;&gt;wrap_content&lt;/item&gt;</span><br><span class="line">       &lt;item name=&quot;android:background&quot;&gt;@drawable/shape_pink_border&lt;/item&gt;</span><br><span class="line">       &lt;item name=&quot;android:ellipsize&quot;&gt;end&lt;/item&gt;</span><br><span class="line">       &lt;item name=&quot;android:maxLines&quot;&gt;1&lt;/item&gt;</span><br><span class="line">       &lt;item name=&quot;android:padding&quot;&gt;8dp&lt;/item&gt;</span><br><span class="line">       &lt;item name=&quot;android:textColor&quot;&gt;@android:color/white&lt;/item&gt;</span><br><span class="line">   &lt;/style&gt;</span><br></pre></td></tr></table></figure></p>
+<p>shape_pink_border文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;</span><br><span class="line">    &lt;corners android:radius=&quot;8dp&quot;/&gt;</span><br><span class="line">    &lt;stroke android:width=&quot;1dp&quot; android:color=&quot;@android:color/holo_red_light&quot;/&gt;</span><br><span class="line">&lt;/shape&gt;</span><br></pre></td></tr></table></figure></p>
+<p>运行看一下效果：<br><img src="https://img-blog.csdnimg.cn/20190514175032267.png" alt="在这里插入图片描述"><br>可以看到内容虽然出来了，但都挤在同一行了，这显然并不是我要的效果。</p>
+<p>那么接下来就该FlexboxLayout属性们出来救场了：</p>
+<h2 id="三、FlexboxLayout属性介绍"><a href="#三、FlexboxLayout属性介绍" class="headerlink" title="三、FlexboxLayout属性介绍"></a>三、FlexboxLayout属性介绍</h2><h3 id="FlexboxLayout直接属性"><a href="#FlexboxLayout直接属性" class="headerlink" title="FlexboxLayout直接属性"></a>FlexboxLayout直接属性</h3><h4 id="1-app-flexWrap-”nowrap”"><a href="#1-app-flexWrap-”nowrap”" class="headerlink" title="1. app:flexWrap=”nowrap”"></a>1. app:flexWrap=”nowrap”</h4><p>简单来说，该属性表示是否换行和换行的方向。<br><img src="https://img-blog.csdnimg.cn/201905141757008.png" alt="在这里插入图片描述"><br>由上图可见，flexWrap属性一共有三个枚举值，分别是<code>nowrap</code>、<code>wrap</code>和<code>wrap_reverse</code></p>
+<ul>
+<li><code>nowrap</code>:单行显示，不换行，默认就是这个属性。<br><img src="https://img-blog.csdnimg.cn/20190514175032267.png" alt="在这里插入图片描述"></li>
+<li><code>wrap</code>：当内容超过一行时，自动换行。效果：<br><img src="https://img-blog.csdnimg.cn/20190514180738599.png" alt="在这里插入图片描述"></li>
+<li><p><code>wrap_reverse</code> ：反向换行（下一行内容在当前行之上）<br><img src="https://img-blog.csdnimg.cn/20190514180954962.png" alt="在这里插入图片描述"></p>
+<h4 id="2-app-flexDirection-”row”"><a href="#2-app-flexDirection-”row”" class="headerlink" title="2. app:flexDirection=”row”"></a>2. app:flexDirection=”row”</h4><p>该属性表示主轴的方向，子元素的排列按照轴线方向依次添加。<br><img src="https://img-blog.csdnimg.cn/20190515095235856.png" alt="在这里插入图片描述"><br>再看一下源码，可见flexDirection的枚举值有<code>row</code>和<code>row_reverse</code>，<code>column</code>和<code>column_reverse</code></p>
+</li>
+<li><p><code>row</code> : 主轴方向按水平（行）方向排版，默认就是这个属性。效果：<br><img src="https://img-blog.csdnimg.cn/20190515095621148.png" alt="在这里插入图片描述"></p>
+</li>
+<li><p><code>row_reverse</code> : 主轴方向按水平（行）方向反向排版。效果：<br><img src="https://img-blog.csdnimg.cn/20190515095736422.png" alt="在这里插入图片描述"><br>由效果图可见，<code>row</code>是从左向右绘制，<code>row_reverse</code>是row的反向，也就是从右向左绘制啦。同理<code>column</code>也是一样。</p>
+</li>
+<li><p><code>column</code> : 主轴方向按竖直（列）方向排版。效果：<br><img src="https://img-blog.csdnimg.cn/20190515100250134.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+</li>
+<li><code>column_reverse</code> : 主轴方向按竖直（列）方向反向排版（从下向上）。<br><img src="https://img-blog.csdnimg.cn/20190515100338678.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><h4 id="3-app-justifyContent-”flex-start”"><a href="#3-app-justifyContent-”flex-start”" class="headerlink" title="3. app:justifyContent=”flex_start”"></a>3. app:justifyContent=”flex_start”</h4>关于这个属性，官方有一段说明：<blockquote>
+<p>`</p>
+<pre><code>&lt;!--
+    Omitting flex-flow property since it&apos;s reflected in the parent flex container.
+    Set the flexDirection and/or flexWrap to the parent flex container explicitly if you
+    want to use the flex-flow similar way to the web.
+ --&gt;
+</code></pre><p>`</p>
+</blockquote>
+</li>
+</ul>
+<p>作用是控制元素在主轴上的对齐方式，需要配合<code>flexDirection</code>或<code>flexWrap</code>属性来使用。<br><img src="https://img-blog.csdnimg.cn/2019051510173578.png" alt="在这里插入图片描述"><br>看一下源码，可见<code>app:justifyContent</code>属性有<code>flex_start</code>、<code>flex_end</code>、<code>center</code>、<code>space_between</code>、<code>space_around</code>和<code>space_evenly</code>6个枚举值。</p>
+<p>下面把以上两个属性改为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">app:flexWrap=&quot;wrap&quot;</span><br><span class="line">      app:flexDirection=&quot;row&quot;</span><br></pre></td></tr></table></figure></p>
+<p>来看效果。</p>
+<ul>
+<li><code>flex_start</code>: 左对齐，默认值。<br><img src="https://img-blog.csdnimg.cn/20190515095621148.png" alt="在这里插入图片描述"></li>
+<li><code>flex_end</code> : 右对齐。<br><img src="https://img-blog.csdnimg.cn/20190515102427865.png" alt="在这里插入图片描述"></li>
+<li><code>center</code>：居中对齐。<br><img src="https://img-blog.csdnimg.cn/20190515102542345.png" alt="在这里插入图片描述"></li>
+<li><p><code>space_between</code>: 两端对齐。<br><img src="https://img-blog.csdnimg.cn/20190515102729865.png" alt="在这里插入图片描述"></p>
+</li>
+<li><p><code>space_around</code> : 分散对齐。<br><img src="https://img-blog.csdnimg.cn/20190515102815495.png" alt="在这里插入图片描述"></p>
+</li>
+</ul>
+<ul>
+<li><code>space_evenly</code>:子元素在一行内均匀分布空间。<br><img src="https://img-blog.csdnimg.cn/20190515102859538.png" alt="在这里插入图片描述"></li>
+</ul>
+<h4 id="4-app-alignItems-”stretch”"><a href="#4-app-alignItems-”stretch”" class="headerlink" title="4. app:alignItems=”stretch”"></a>4. app:alignItems=”stretch”</h4><p>该属性表示元素在<code>每条轴线</code>上的对齐方式。</p>
+<blockquote>
+<p><strong><em>注意</em></strong>：如果设置了<code>alignContent</code>，且值不为stretch,那么该属性失效。</p>
+</blockquote>
+<p><img src="https://img-blog.csdnimg.cn/20190515104039887.png" alt="在这里插入图片描述"><br><code>app:alignItems</code>属性有<code>flex_start</code>、<code>flex_end</code>、<code>center</code>、<code>baseline</code>和<code>stretch</code></p>
+<p>下面把FlexBoxLayout指定一个高度，并为TextView添加不同的padding来看效果。</p>
+<ul>
+<li><code>stretch</code>: 默认值，如果子元素未设置高度，则沾满父布局高度。<br><img src="https://img-blog.csdnimg.cn/20190515104747671.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></li>
+<li><code>flex_start</code> :顶端对齐。<br><img src="https://img-blog.csdnimg.cn/20190515105529325.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></li>
+<li><code>flex_end</code> :底端对齐。<br><img src="https://img-blog.csdnimg.cn/20190515105605583.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></li>
+<li><code>center</code> : 居中对齐。<br><img src="https://img-blog.csdnimg.cn/20190515105648629.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></li>
+<li><code>baseline</code> :按照第一个元素的基线对齐。<br><img src="https://img-blog.csdnimg.cn/20190515105909488.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></li>
+</ul>
+<p>下面这张图片可以很直观的表达这个属性的作用。<a href="https://www.oschina.net/news/73442/google-flexbox-layout" target="_blank" rel="noopener">图片来源</a><br><img src="https://img-blog.csdnimg.cn/20190515105059606.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h4 id="5-app-alignContent-”stretch”"><a href="#5-app-alignContent-”stretch”" class="headerlink" title="5. app:alignContent=”stretch”"></a>5. app:alignContent=”stretch”</h4><p>该属性表示<code>每条轴线</code>在整个布局中的对齐方式。<br><img src="https://img-blog.csdnimg.cn/20190515110558455.png" alt="在这里插入图片描述"><br>app:alignContent属性有<code>flex_start</code>、<code>flex_end</code>、<code>center</code>、<code>space_between</code>、<code>space_around</code>和<code>stretch</code>6个枚举值。</p>
+<ul>
+<li><code>stretch</code>:默认值，轴线占满整个父布局。<br><img src="https://img-blog.csdnimg.cn/20190515104747671.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></li>
+<li><code>flex_start</code>:顶部对齐所有轴线。<br><img src="https://img-blog.csdnimg.cn/20190515111036674.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></li>
+<li><code>flex_end</code>:底部对齐所有轴线。<br><img src="https://img-blog.csdnimg.cn/20190515111112984.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></li>
+<li><code>center</code>:居中对齐所有轴线。<br><img src="https://img-blog.csdnimg.cn/20190515111153840.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></li>
+<li><p><code>space_between</code>:两端对齐所有轴线。<br><img src="https://img-blog.csdnimg.cn/2019051511123743.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+</li>
+<li><p><code>space_around</code>:分散对齐所有轴线。<br><img src="https://img-blog.csdnimg.cn/20190515111305405.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>插一句嘴，轴线方向可以由<code>flexDirection</code>属性来指定，注意属性搭配，举一反三。</p>
+</li>
+</ul>
+<h4 id="6-dividerDrawable-（reference）"><a href="#6-dividerDrawable-（reference）" class="headerlink" title="6. dividerDrawable （reference）"></a>6. dividerDrawable （reference）</h4><p>水平和竖直方向分割线。</p>
+<h4 id="7-dividerDrawableHorizontal-dividerDrawableVertical-（reference）"><a href="#7-dividerDrawableHorizontal-dividerDrawableVertical-（reference）" class="headerlink" title="7. dividerDrawableHorizontal  / dividerDrawableVertical （reference）"></a>7. dividerDrawableHorizontal  / dividerDrawableVertical （reference）</h4><p>水平/竖直方向分割线。</p>
+<h4 id="8-showDivider"><a href="#8-showDivider" class="headerlink" title="8. showDivider"></a>8. showDivider</h4><p>显示水平和竖直方向分割线方式。<br>枚举值有：</p>
+<ul>
+<li><p><code>none</code><br>不显示。</p>
+</li>
+<li><p><code>beginning</code><br><img src="https://img-blog.csdnimg.cn/2019051515100723.png" alt="在这里插入图片描述"></p>
+</li>
+<li><code>middle</code><br><img src="https://img-blog.csdnimg.cn/20190515150934198.png" alt="在这里插入图片描述"></li>
+<li><code>end</code><br><img src="https://img-blog.csdnimg.cn/20190515151039167.png" alt="在这里插入图片描述"></li>
+</ul>
+<h4 id="9-showDividerHorizontal-showDividerVertical"><a href="#9-showDividerHorizontal-showDividerVertical" class="headerlink" title="9. showDividerHorizontal / showDividerVertical"></a>9. showDividerHorizontal / showDividerVertical</h4><p>显示水平/竖直方向分割线方式。</p>
+<h3 id="FlexboxLayout子元素属性"><a href="#FlexboxLayout子元素属性" class="headerlink" title="FlexboxLayout子元素属性"></a>FlexboxLayout子元素属性</h3><h4 id="1-app-layout-order-”1”"><a href="#1-app-layout-order-”1”" class="headerlink" title="1. app:layout_order=”1”"></a>1. app:layout_order=”1”</h4><p>指定子元素排序优先级，值越小越排在前面，默认值为1。设置值类型为float。<br><img src="https://img-blog.csdnimg.cn/20190515134907256.png" alt="在这里插入图片描述"><br>如图，<strong>蓝牙</strong>TextView元素在xml中排序为第二个，但给它的<code>layout_order</code>属性指定为2，<strong>蓝牙</strong>排名到最后一位了。</p>
+<h4 id="2-app-layout-flexGrow-”0”"><a href="#2-app-layout-flexGrow-”0”" class="headerlink" title="2. app:layout_flexGrow=”0”"></a>2. app:layout_flexGrow=”0”</h4><p>分配同一轴线剩余控件所占权重，默认值为0，表示不参与分配。用法类似于<strong>LinearLayout</strong>的<code>weight</code>，不过weight分配的是整个父布局控件，而<code>layout_flexGrow</code>分配的是同一行/列的剩余空间。</p>
+<p>举个例子：将<strong>蓝牙</strong>的<code>layout_flexGrow</code>设为1，<strong>程序</strong>的<code>layout_flexGrow</code>属性设为2<br><img src="https://img-blog.csdnimg.cn/2019051513575819.png" alt="在这里插入图片描述"><br>如图，<strong>蓝牙</strong>与<strong>程序</strong>都参与到了剩余空间分配，由于<strong>程序</strong>设置的权重为2，所以比<strong>蓝牙</strong>多分配了一倍的空间。</p>
+<h4 id="3-app-layout-flexShrink-”0”"><a href="#3-app-layout-flexShrink-”0”" class="headerlink" title="3. app:layout_flexShrink=”0”"></a>3. app:layout_flexShrink=”0”</h4><p>子元素缩放比例，如果设置了换行（flexWrap=”wrap或wrap_reverse”）则该属性无效。<br>设置值类型为float，0表示不缩放，数值越大，缩放比例越大，默认为1，负值无效。</p>
+<p>例子：<strong>推送和即时通讯</strong>设置为0(不缩放)，<strong>旅行——在路上</strong>设置为2（双倍缩放）<br><img src="https://img-blog.csdnimg.cn/20190515140905798.png" alt="在这里插入图片描述"></p>
+<h4 id="4-app-layout-flexBasisPercent-”-1”"><a href="#4-app-layout-flexBasisPercent-”-1”" class="headerlink" title="4. app:layout_flexBasisPercent=”-1”"></a>4. app:layout_flexBasisPercent=”-1”</h4><p>官方解释：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--</span><br><span class="line">           The initial length in a percentage format relative to its parent. This is similar to the</span><br><span class="line">           flex-basis property in the original CSS specification.</span><br><span class="line">           (https://www.w3.org/TR/css-flexbox-1/#flex-basis-property)</span><br><span class="line">           But unlike the flex-basis property, this attribute only accepts a value in fraction</span><br><span class="line">           (percentage), whereas flex-basis property accepts width values such as 1em, 10px and</span><br><span class="line">           the &apos;content&apos; string.</span><br><span class="line">           But specifying initial fixed width values can be done by specifying width values in</span><br><span class="line">           layout_width (or layout_height, varies depending on the flexDirection). Also the same</span><br><span class="line">           effect can be done by specifying &quot;wrap_content&quot; in layout_width (or layout_height) if</span><br><span class="line">           developers want to achieve the same effect as &apos;content&apos;.</span><br><span class="line">           Thus, this attribute only accepts fraction values, which can&apos;t be done through</span><br><span class="line">           layout_width (or layout_height) for simplicity.</span><br><span class="line">       --&gt;</span><br></pre></td></tr></table></figure></p>
+<p>表示子元素长度是其父布局长度的百分比，设置了元素的<code>layout_flexBasisPercent</code>将覆盖子元素原本长度，默认值为-1。要注意的是，只有具体设置了父布局的长度才能生效。<br>设置的值为百分数，例如50%。</p>
+<p>例子：将第一个元素宽度设置为父布局的50%（<code>app:layout_flexBasisPercent=&quot;50%&quot;</code>）。<br><img src="https://img-blog.csdnimg.cn/20190515142713732.png" alt="在这里插入图片描述"></p>
+<h4 id="5-app-layout-alignSelf-”auto”"><a href="#5-app-layout-alignSelf-”auto”" class="headerlink" title="5. app:layout_alignSelf=”auto”"></a>5. app:layout_alignSelf=”auto”</h4><p><img src="https://img-blog.csdnimg.cn/20190515143048556.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>所用与<code>alignItems</code>属性一样，不同点是<code>alignItems</code>设置的是所有元素，而<code>layout_alignSelf</code>作用于单个元素。</p>
+<p>需要注意的一点是，若父布局设置了<code>alignContent</code>，并且枚举值不为<code>stretch</code>，则改属性失效。</p>
+<p><code>layout_alignSelf</code>的枚举值有<code>auto</code>,<code>flex_start</code>,<code>flex_end</code>，<code>center</code>，<code>baseline</code>和<code>stretch</code>，作用与<code>alignItems</code>属性相同。</p>
+<p>例子：将<strong>推送和即时通讯</strong>设置为flex_start，蓝牙的<strong>layout_alignSelf</strong>设置为stretch。效果：</p>
+<p><img src="https://img-blog.csdnimg.cn/2019051514414988.png" alt="在这里插入图片描述"></p>
+<h4 id="6-app-layout-wrapBefore-”false”"><a href="#6-app-layout-wrapBefore-”false”" class="headerlink" title="6.app:layout_wrapBefore=”false”"></a>6.app:layout_wrapBefore=”false”</h4><p>强制换行，默认为false。<br>若为子元素设置了<code>layout_wrapBefore</code>属性为false，那么这个子元素将重新另起一行。</p>
+<p>例：为<strong>蓝牙</strong>设置<code>layout_wrapBefore</code>属性为true<br><img src="https://img-blog.csdnimg.cn/20190515145617180.png" alt="在这里插入图片描述"></p>
+<h4 id="7-layout-minWidth-layout-minHeight"><a href="#7-layout-minWidth-layout-minHeight" class="headerlink" title="7. layout_minWidth / layout_minHeight"></a>7. layout_minWidth / layout_minHeight</h4><p>限制 FlexboxLayout的子元素（宽或高）不会小于最小值，无论<code>layout_flexShrink</code>属性为多少，子元素不会被缩小到小于设置的这个最小值。</p>
+<h4 id="8-layout-maxWidth-layout-maxHeight"><a href="#8-layout-maxWidth-layout-maxHeight" class="headerlink" title="8. layout_maxWidth / layout_maxHeight"></a>8. layout_maxWidth / layout_maxHeight</h4><p>限制 FlexboxLayout的子元素（宽或高）不会大于最小值，无论<code>layout_flexGrow</code>属性为多少，子元素不会被放大到大于于设置的这个最小值。</p>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>FlexBoxLayout的常用属性就这么多了，灵活运用这些属性的搭配可以达到非常灵活的效果。</p>
+<h2 id="四、与RecyclerView配合使用"><a href="#四、与RecyclerView配合使用" class="headerlink" title="四、与RecyclerView配合使用"></a>四、与RecyclerView配合使用</h2><p>官方不仅提供了<code>FlexboxLayout</code>布局，还提供了<code>FlexboxLayoutManager</code>来与<code>RecyclerView</code>配合使用。</p>
+<blockquote>
+<p>The second one is FlexboxLayoutManager that can be used within RecyclerView.</p>
+</blockquote>
+<p>虽然<strong>RecyclerView</strong>之前也有<code>StaggeredGridLayoutManager</code>来提供瀑布流效果，但还是要指定行/列数、相比之下，<code>FlexboxLayoutManager</code>更加灵活，且应用场景也不尽相同。</p>
+<p>下面将RecyclerView的layoutManager设置成<code>FlexboxLayoutManager</code><br>先看一下效果:<br><img src="https://img-blog.csdnimg.cn/20190515121152189.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>白色背景为设置了<strong>FlexboxLayoutManager</strong>的RecyclerView，绿色背景为FlexboxLayout，可见<code>FlexboxLayoutManager</code>y与<code>FlexboxLayout</code>可以达到相同的效果。</p>
+<p>主要代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">val flexboxLayoutManager = FlexboxLayoutManager(this)</span><br><span class="line">      flexboxLayoutManager.flexWrap = FlexWrap.WRAP</span><br><span class="line">      flexboxLayoutManager.flexDirection = FlexDirection.ROW</span><br><span class="line">      flexboxLayoutManager.justifyContent = JustifyContent.FLEX_START</span><br><span class="line">      flexboxLayoutManager.alignItems = AlignItems.FLEX_START</span><br><span class="line">//flexboxLayoutManager.alignContent = AlignContent.FLEX_START</span><br><span class="line"></span><br><span class="line">      val adapter = FlexAdapter()</span><br><span class="line">      initData(adapter)</span><br><span class="line">      rv_flex.layoutManager = flexboxLayoutManager</span><br><span class="line">      rv_flex.adapter = adapter</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p><strong><em>注意</em></strong>：flexboxLayoutManager.alignContent，<code>FlexboxLayoutManager</code>不支持alignContent 属性</p>
+</blockquote>
+<p>看一下setAlignContent的源码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">   public void setAlignContent(@AlignContent int alignContent) &#123;</span><br><span class="line">       throw new UnsupportedOperationException(&quot;Setting the alignContent in the &quot;</span><br><span class="line">               + &quot;FlexboxLayoutManager is not supported. Use FlexboxLayout &quot;</span><br><span class="line">               + &quot;if you need to use this attribute.&quot;);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>可见，<code>FlexboxLayoutManager</code>不支持alignContent 属性，如果强行设置则会报出以下异常。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Caused by: java.lang.UnsupportedOperationException: Setting the alignContent in the FlexboxLayoutManager is not supported. Use FlexboxLayout if you need to use this attribute.</span><br></pre></td></tr></table></figure>
+<p><a href="https://gitee.com/zhengyz_0430/JetPackFirstDemo" target="_blank" rel="noopener">Demo源码</a></p>
+<p>那么<code>FlexboxLayoutManager</code>和<code>FlexboxLayout</code>还有哪些使用的不同呢？官方这张表给出了很好地说明。</p>
+<table>
+<thead>
+<tr>
+<th>Attribute / Feature</th>
+<th>FlexboxLayout</th>
+<th>FlexboxLayoutManager (RecyclerView)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>flexDirection</td>
+<td><img src="https://img-blog.csdnimg.cn/20190515122352736.png" alt></td>
+<td><img src="https://img-blog.csdnimg.cn/20190515122352736.png" alt></td>
+</tr>
+<tr>
+<td>flexWrap</td>
+<td><img src="https://img-blog.csdnimg.cn/20190515122352736.png" alt></td>
+<td><img src="https://img-blog.csdnimg.cn/20190515122352736.png" alt>（except <code>wrap_reverse</code>）</td>
+</tr>
+<tr>
+<td>justifyContent</td>
+<td><img src="https://img-blog.csdnimg.cn/20190515122352736.png" alt></td>
+<td><img src="https://img-blog.csdnimg.cn/20190515122352736.png" alt></td>
+</tr>
+<tr>
+<td>alignItems</td>
+<td><img src="https://img-blog.csdnimg.cn/20190515122352736.png" alt></td>
+<td><img src="https://img-blog.csdnimg.cn/20190515122352736.png" alt></td>
+</tr>
+<tr>
+<td>alignContent</td>
+<td><img src="https://img-blog.csdnimg.cn/20190515122352736.png" alt></td>
+<td>-</td>
+</tr>
+<tr>
+<td>layout_order</td>
+<td><img src="https://img-blog.csdnimg.cn/20190515122352736.png" alt></td>
+<td>-</td>
+</tr>
+<tr>
+<td>layout_flexGrow</td>
+<td><img src="https://img-blog.csdnimg.cn/20190515122352736.png" alt></td>
+<td><img src="https://img-blog.csdnimg.cn/20190515122352736.png" alt></td>
+</tr>
+<tr>
+<td>layout_flexShrink</td>
+<td><img src="https://img-blog.csdnimg.cn/20190515122352736.png" alt></td>
+<td><img src="https://img-blog.csdnimg.cn/20190515122352736.png" alt></td>
+</tr>
+<tr>
+<td>layout_alignSelf</td>
+<td><img src="https://img-blog.csdnimg.cn/20190515122352736.png" alt></td>
+<td><img src="https://img-blog.csdnimg.cn/20190515122352736.png" alt></td>
+</tr>
+<tr>
+<td>layout_flexBasisPercent</td>
+<td><img src="https://img-blog.csdnimg.cn/20190515122352736.png" alt></td>
+<td><img src="https://img-blog.csdnimg.cn/20190515122352736.png" alt></td>
+</tr>
+<tr>
+<td>layout_(min/max)Width</td>
+<td><img src="https://img-blog.csdnimg.cn/20190515122352736.png" alt></td>
+<td><img src="https://img-blog.csdnimg.cn/20190515122352736.png" alt></td>
+</tr>
+<tr>
+<td>layout_(min/max)Height</td>
+<td><img src="https://img-blog.csdnimg.cn/20190515122352736.png" alt></td>
+<td><img src="https://img-blog.csdnimg.cn/20190515122352736.png" alt></td>
+</tr>
+<tr>
+<td>layout_wrapBefore</td>
+<td><img src="https://img-blog.csdnimg.cn/20190515122352736.png" alt></td>
+<td><img src="https://img-blog.csdnimg.cn/20190515122352736.png" alt></td>
+</tr>
+<tr>
+<td>Divider</td>
+<td><img src="https://img-blog.csdnimg.cn/20190515122352736.png" alt></td>
+<td><img src="https://img-blog.csdnimg.cn/20190515122352736.png" alt></td>
+</tr>
+<tr>
+<td>View recycling</td>
+<td>-</td>
+<td><img src="https://img-blog.csdnimg.cn/20190515122352736.png" alt></td>
+</tr>
+<tr>
+<td>Scrolling</td>
+<td>*1</td>
+<td><img src="https://img-blog.csdnimg.cn/20190515122352736.png" alt></td>
+</tr>
+</tbody>
+</table>
+<h2 id="五、实践"><a href="#五、实践" class="headerlink" title="五、实践"></a>五、实践</h2><p><img src="https://img-blog.csdnimg.cn/20190514164120744.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTM5NzQ3MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>这样的流失布局，如果在项目中碰到，貌似只能自定义View，或者寻求别人写好的库了。<br>但有了FlexboxLayout之后可以完美解决。</p>
+<h2 id="六、总结"><a href="#六、总结" class="headerlink" title="六、总结"></a>六、总结</h2><blockquote>
+<p>空谈误国，实干兴邦</p>
+</blockquote>
+<p>要真想理解<strong>FlexboxLayout</strong>的各个属性，自己实践和阅读源码是必不可少的，话不多说，还是多多动手实践吧。</p>
+<p>FlexboxLayout与FlexboxLayoutManager可以完美实现灵活的流式布局，并且该库已经添加到androidX了，Google大大为我们的开发真是操碎了心啊。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://blog.csdn.net/tabolt/article/details/51799226" target="_blank" rel="noopener">https://blog.csdn.net/tabolt/article/details/51799226</a><br><a href="https://www.jianshu.com/p/3c471953e36d" target="_blank" rel="noopener">https://www.jianshu.com/p/3c471953e36d</a><br><a href="https://www.oschina.net/news/73442/google-flexbox-layout" target="_blank" rel="noopener">https://www.oschina.net/news/73442/google-flexbox-layout</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/15/第一篇测试博客/" rel="next" title="FlexboxLayout使用浅析（Google官方流式布局方案）">
+                <i class="fa fa-chevron-left"></i> FlexboxLayout使用浅析（Google官方流式布局方案）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://pic.qqtn.com/up/2018-8/2018081715500076413.jpg" alt="白泽丶">
+            
+              <p class="site-author-name" itemprop="name">白泽丶</p>
+              <p class="site-description motion-element" itemprop="description">君子藏计于身，待时而动</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、FlexboxLayout是什么"><span class="nav-number">1.</span> <span class="nav-text">一、FlexboxLayout是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、如何使用FlexboxLayout"><span class="nav-number">2.</span> <span class="nav-text">二、如何使用FlexboxLayout</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#引用依赖"><span class="nav-number">2.1.</span> <span class="nav-text">引用依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在布局中简单使用"><span class="nav-number">2.2.</span> <span class="nav-text">在布局中简单使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、FlexboxLayout属性介绍"><span class="nav-number">3.</span> <span class="nav-text">三、FlexboxLayout属性介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#FlexboxLayout直接属性"><span class="nav-number">3.1.</span> <span class="nav-text">FlexboxLayout直接属性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-app-flexWrap-”nowrap”"><span class="nav-number">3.1.1.</span> <span class="nav-text">1. app:flexWrap=”nowrap”</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-app-flexDirection-”row”"><span class="nav-number">3.1.2.</span> <span class="nav-text">2. app:flexDirection=”row”</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-app-justifyContent-”flex-start”"><span class="nav-number">3.1.3.</span> <span class="nav-text">3. app:justifyContent=”flex_start”</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-app-alignItems-”stretch”"><span class="nav-number">3.1.4.</span> <span class="nav-text">4. app:alignItems=”stretch”</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-app-alignContent-”stretch”"><span class="nav-number">3.1.5.</span> <span class="nav-text">5. app:alignContent=”stretch”</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-dividerDrawable-（reference）"><span class="nav-number">3.1.6.</span> <span class="nav-text">6. dividerDrawable （reference）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-dividerDrawableHorizontal-dividerDrawableVertical-（reference）"><span class="nav-number">3.1.7.</span> <span class="nav-text">7. dividerDrawableHorizontal  / dividerDrawableVertical （reference）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-showDivider"><span class="nav-number">3.1.8.</span> <span class="nav-text">8. showDivider</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-showDividerHorizontal-showDividerVertical"><span class="nav-number">3.1.9.</span> <span class="nav-text">9. showDividerHorizontal / showDividerVertical</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FlexboxLayout子元素属性"><span class="nav-number">3.2.</span> <span class="nav-text">FlexboxLayout子元素属性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-app-layout-order-”1”"><span class="nav-number">3.2.1.</span> <span class="nav-text">1. app:layout_order=”1”</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-app-layout-flexGrow-”0”"><span class="nav-number">3.2.2.</span> <span class="nav-text">2. app:layout_flexGrow=”0”</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-app-layout-flexShrink-”0”"><span class="nav-number">3.2.3.</span> <span class="nav-text">3. app:layout_flexShrink=”0”</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-app-layout-flexBasisPercent-”-1”"><span class="nav-number">3.2.4.</span> <span class="nav-text">4. app:layout_flexBasisPercent=”-1”</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-app-layout-alignSelf-”auto”"><span class="nav-number">3.2.5.</span> <span class="nav-text">5. app:layout_alignSelf=”auto”</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-app-layout-wrapBefore-”false”"><span class="nav-number">3.2.6.</span> <span class="nav-text">6.app:layout_wrapBefore=”false”</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-layout-minWidth-layout-minHeight"><span class="nav-number">3.2.7.</span> <span class="nav-text">7. layout_minWidth / layout_minHeight</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-layout-maxWidth-layout-maxHeight"><span class="nav-number">3.2.8.</span> <span class="nav-text">8. layout_maxWidth / layout_maxHeight</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小结"><span class="nav-number">3.3.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、与RecyclerView配合使用"><span class="nav-number">4.</span> <span class="nav-text">四、与RecyclerView配合使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、实践"><span class="nav-number">5.</span> <span class="nav-text">五、实践</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六、总结"><span class="nav-number">6.</span> <span class="nav-text">六、总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">6.1.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">白泽丶</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
